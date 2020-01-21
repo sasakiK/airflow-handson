@@ -1,54 +1,42 @@
-FROM centos:latest
+# CentOS7
+FROM centos:centos7
 
-RUN yum -y update
-RUN yum -y groupinstall "Development Tools"
-RUN yum -y install \ 
-           kernel-devel \
-           kernel-headers \
-           gcc-c++ \
-           patch \
-           libyaml-devel \
-           libffi-devel \
-           autoconf \
-           automake \
-           make \
-           libtool \
-           bison \
-           tk-devel \
-           zip \
-           wget \
-           tar \
-           gcc \
-           zlib \
-           zlib-devel \
-           bzip2 \
-           bzip2-devel \
-           readline \
-           readline-devel \
-           sqlite \
-           sqlite-devel \
-           openssl \
-           openssl-devel \
-           git \
-           gdbm-devel \
-           python-devel
+## install util
+RUN yum -y update \
+ && yum -y install \
+    epel-release \
+    gcc \
+    git \
+    vim \
+    which \
+ && yum clean all
 
-# pythonをインストール
-WORKDIR /root
-RUN wget https://www.python.org/ftp/python/3.7.3/Python-3.7.3.tgz
-RUN tar xzvf Python-3.7.3.tgz
+# https://www.python.jp/install/centos/index.html
+RUN yum install -y https://centos7.iuscommunity.org/ius-release.rpm
+RUN yum install -y \
+    python36u \
+    python36u-devel \
+    python36u-pip \
+ && yum clean all \
+ && ln -sf /usr/bin/python3.6 /usr/bin/python3 \
+ && ln -sf /usr/bin/pip3.6 /usr/bin/pip3 \
+ && pip3 install --upgrade pip
 
-WORKDIR ./Python-3.7.3
-RUN ./configure --with-threads
-RUN make install
+# locale & timezone 
+RUN yum reinstall -y glibc-common \
+ && yum clean all
+ENV LANG ja_JP.UTF-8
+ENV LANGUAGE ja_JP:ja
+RUN localedef -f UTF-8 -i ja_JP ja_JP.UTF-8 \
+ && echo 'ZONE="Asia/Tokyo"' > /etc/sysconfig/clock \
+ && ln -sf /usr/share/zoneinfo/Asia/Tokyo /etc/localtime \
+ && echo 'KEYMAP="jp106"' > /etc/vconsole.conf
 
-# pipをinstall
-RUN wget https://bootstrap.pypa.io/get-pip.py
-RUN python get-pip.py
+# setting
+RUN echo 'alias ll="ls -laF --color=auto"' >> /root/.bashrc \
+ && echo 'export PS1="[\u@\h \w]\$ "' >> /root/.bashrc
 
-
-RUN alias python='python3'
-
+# install airflow
 RUN pip install apache-airflow
 
 WORKDIR /root

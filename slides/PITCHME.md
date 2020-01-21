@@ -3,7 +3,7 @@ marp: true
 theme: base
 description: Airflow Hands-on slide
 paginate: true
-footer: ST Reserve color
+footer: ...
 ---
 
 <!-- size: 16:9 -->
@@ -127,7 +127,44 @@ footer: ST Reserve color
 
 2020.01.24
 
+
 ---
+
+<style scoped>
+    h1 {
+        text-align: center;
+        font-size: 70px;
+        height: 100%;
+        padding-top: 20%;
+    }
+</style>
+
+# Airflowとは
+
+---
+
+<style scoped>
+    h1 { color: white; }
+    h6 { text-align: center; margin-top:0; }
+    li, ul { color: white; }
+    pre {color: #E3A06A;}
+    li {list-style-type: none;}
+    li:before { background: white; }
+</style>
+
+# Airflowとは
+
+![bg](./assets/images/top-bl.png)
+
+- ↓ みたいなやつが作れるやつ
+
+###### ![height:250px width:100%](./assets/images/top.png)
+
+- ワークフロー(データの取得・クリーニング・前処理、モデリング、スクレイピングなどの処理)を管理したり、スケジュールしたりするためのフレームワーク
+- 2014年10月に、`Airbnb`の`Maxime Beauchemin`によって始まったOSSプロジェクトで、2019年1月に`Apache Airflow`になった
+
+---
+
 
 
 ---
